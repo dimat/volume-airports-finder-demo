@@ -41,7 +41,7 @@ func (s *HTTPServer) Start(ctx context.Context) error {
 	case <-ctx.Done():
 		log.Println("Shutting down the server...")
 	case err := <-serverErrors:
-		log.Fatal("Error starting HTTP server:", err)
+		return fmt.Errorf("could not start the server: %w", err)
 	}
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
