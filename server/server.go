@@ -25,10 +25,6 @@ func (s *HTTPServer) Register(endpoint string, handler http.Handler) {
 	s.mux.Handle(endpoint, handler)
 }
 
-func (s *HTTPServer) Handler() http.Handler {
-	return s.srv.Handler
-}
-
 func (s *HTTPServer) Start(ctx context.Context) error {
 	serverErrors := make(chan error)
 
