@@ -28,18 +28,18 @@ func TestFinderFindPath(t *testing.T) {
 		pathFinderRet finder.Path
 		pathFinderErr error
 		expectedReply service.FindPathResponse
-		expectedErr   string
+		expectedErr   error
 	}{
 		{
 			name:        "Invalid input",
 			input:       [][]string{{"SFO"}},
-			expectedErr: "each flight record should have two airports",
+			expectedErr: service.ErrInvalidRecord,
 		},
 		{
 			name:          "PathFinder error",
 			input:         [][]string{{"SFO", "EWR"}},
 			pathFinderErr: errors.New("pathfinder error"),
-			expectedErr:   "pathfinder error",
+			expectedErr:   errors.New("pathfinder error"),
 		},
 		{
 			name:          "Successful result",
@@ -60,9 +60,9 @@ func TestFinderFindPath(t *testing.T) {
 
 			reply, err := finderService.Call(tc.input)
 
-			if tc.expectedErr != "" {
+			if tc.expectedErr != nil {
 				assert.Error(t, err)
-				assert.Equal(t, tc.expectedErr, err.Error())
+				assert.Equal(t, tc.expectedErr, err)
 			} else {
 				assert.NoError(t, err)
 			}

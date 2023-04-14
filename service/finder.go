@@ -14,11 +14,13 @@ type FindPathRequest [][]string
 
 type FindPathResponse []string
 
+var ErrInvalidRecord = errors.New("each flight record should have two airports")
+
 func (f *Finder) Call(args FindPathRequest) (FindPathResponse, error) {
 	flights := make([]finder.Flight, len(args), len(args))
 	for idx, flight := range args {
 		if len(flight) != 2 {
-			return nil, errors.New("each flight record should have two airports")
+			return nil, ErrInvalidRecord
 		}
 		flights[idx] = finder.Flight{
 			Source:      finder.Airport(flight[0]),
